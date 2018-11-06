@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 
 const initialState = {
-	peoples: [],
+	phones: [],
 	loading: false,
 	error: null
 }
@@ -15,9 +15,10 @@ const loadPhoneListStart = (state, action) => {
 }
 
 const loadPhoneListSucces = (state, action) => {
+
 	return {
 		...state,
-		peoples: [
+		phones: [
 			...action.phoneList
 		],
 		loading: false
