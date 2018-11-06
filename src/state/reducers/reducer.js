@@ -15,7 +15,6 @@ const loadPhoneListStart = (state, action) => {
 }
 
 const loadPhoneListSucces = (state, action) => {
-
 	return {
 		...state,
 		phones: [
