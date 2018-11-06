@@ -4,15 +4,15 @@ const PhoneItem = props => (
 	<div className="item">
 		<div className="ui card">
 			<div className="image">
-				<img src="/images/avatar2/large/kristy.png" />
+				<img src={props.photo} />
 			</div>
 			<div className="content">
-				<div className="header">Kristy</div>
+				<div className="header">{`${props.firstName} ${props.lastName}`}</div>
 				<div className="meta">
-					<span className="date">Joined in 2013</span>
+					<span className="date">{props.company}</span>
 				</div>
 				<div className="description">
-					Kristy is an art director living in New York.
+					{props.contacts.email}
 				</div>
 			</div>
 		</div>

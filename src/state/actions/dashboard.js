@@ -26,9 +26,9 @@ export const loadPhoneList = () => {
 
 		axios.get('https://phone-book-cc717.firebaseio.com/peoples.json')
 			.then(response => {
-				console.log(response);
+				
 				const phoneList = response.data;
-
+				console.log(phoneList);
 				dispatch( loadPhoneListSuccess(phoneList) )
 			})
 			.catch(error => {
