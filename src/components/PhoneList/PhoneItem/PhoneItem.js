@@ -1,10 +1,11 @@
 import React from 'react';
+import './PhoneItem.css';
 
 const PhoneItem = props => (
 	<div className="item">
-		<div className="ui card">
+		<div className="ui card phoneCard">
 			<div className="image">
-				<img src={props.photo} />
+				<img src={props.photo} alt={`${props.firstName} ${props.lastName}`}/>
 			</div>
 			<div className="content">
 				<div className="header">{`${props.firstName} ${props.lastName}`}</div>
