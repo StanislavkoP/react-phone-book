@@ -31,22 +31,30 @@ const loadPhoneListSucces = (state, action) => {
 const loadPhoneListFailed = (state, action) => {
 	return {
 		...state,
-		loading: false
+		loading: false,
+		error: action.error
 	}
 }
 
 const searchPhone = (state, action) => {
+	const searchedValue = action.valueInput.toLowerCase();
+	
 	const filteredPhones = state.phones.filter(item => {
-		return item.firstName.toLowerCase().includes(action.valueInput.toLowerCase()) || item.lastName.toLowerCase().includes(action.valueInput.toLowerCase())
+		const firstName = item.firstName.toLowerCase().includes(searchedValue);
+		const lastName = item.lastName.toLowerCase().includes(searchedValue);
+		const company = item.company.toLowerCase().includes(searchedValue);
+		const email = item.contacts.email.toLowerCase().includes(searchedValue);
+
+		return firstName || lastName || company || email
 	})
-	console.log(filteredPhones);
+
 	return {
 		...state,
 		filteredPhones : filteredPhones
 	}
 }
 
-const viewAll = (state,action) => {
+const viewAllPhones = (state,action) => {
 	return {
 		...state,
 		filteredPhones : [...state.phones]
@@ -59,7 +67,7 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.LOAD_PHONE_LIST_SUCCESS : return loadPhoneListSucces(state, action);
 		case actionTypes.LOAD_PHONE_LIST_FAILED : return loadPhoneListFailed(state, action);
 		case actionTypes.SEARCH_PHONE : return searchPhone(state, action);
-		case actionTypes.VIEW_ALL : return viewAll(state, action);
+		case actionTypes.VIEW_ALL_PHONES : return viewAllPhones(state, action);
 		default: return state;
 	}
 }
