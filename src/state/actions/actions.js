@@ -1,3 +1,5 @@
 export {
-	loadPhoneList
+	loadPhoneList,
+	searchPhone,
+	viewAll
 } from './dashboard';

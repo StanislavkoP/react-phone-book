@@ -37,3 +37,18 @@ export const loadPhoneList = () => {
 			})
 	}
 }
+
+export const searchPhone = (value) => {
+	console.log(value)
+	return {
+		type: actionTypes.SEARCH_PHONE,
+		valueInput: value
+	}
+}
+
+export const viewAll = () => {
+	
+	return {
+		type: actionTypes.VIEW_ALL
+	}
+}
