@@ -2,7 +2,7 @@ import React from 'react';
 import PhoneItem from './PhoneItem/PhoneItem';
 
 const PhoneList = props => (
-	<div className="ui horizontal list">
+	<div className="ui centered cards">
 		{
 			props.phoneList.map( phone => {
 				return <PhoneItem
