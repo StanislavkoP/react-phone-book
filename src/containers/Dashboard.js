@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
 
 import * as actions from '../state/actions/actions';
 
 import PhoneList from '../components/PhoneList/PhoneList';
 import Spinner from '../components/Spinner/Spinner';
+import Input from '../components/Input/Input';
 
 class Dashboard extends Component {
 
@@ -15,42 +17,56 @@ class Dashboard extends Component {
 
 
 	searchPost = value => {
-		this.props.searchPhone(value)
+		const inputValue = value.trim();
+
+		if (inputValue) {
+			this.props.searchPhone(inputValue)
+
+		} else {
+			this.props.viewAllPhones()
+		}
+		
 	}
 
-	viewAll = () => {
-		this.props.viewAll()
-	}
 
 	render () {
 
 		let phoneList = <Spinner />
 		if (this.props.loading === false) {
-			phoneList = <PhoneList phoneList={this.props.phoneList2}/>
+			phoneList = <PhoneList phoneList={ this.props.filteredPhoneList }/>
 
+		}
+
+		let error = null;
+		if (this.props.error) {
+			error = <h4 className="ui red header">{ this.props.error }</h4>
 		}
 
 		return (
 			<React.Fragment>
-				<div className="ui fluid icon input">
-					<input type="text" placeholder="Search..." onChange={(e) => {
-						if(e.currentTarget.value) this.searchPost(e.currentTarget.value);
-						else this.viewAll();
-					}}/>
-				</div>
+				<Input classes="searchPhone" placeholder='Search' change={(e) => this.searchPost(e.currentTarget.value)} />
 				{ phoneList }
+				{ error }
 			</React.Fragment>
 			
 		)
 	}
 }
 
+Dashboard.defaultProps = {
+	filteredPhoneList: []
+}
+
+Dashboard.propTypes = {
+	filteredPhoneList: PropTypes.array.isRequired
+}
+
+
 const mapStateToProps = state => {
-	console.log(state)
 	return {
-		phoneList: state.phones,
-		phoneList2: state.filteredPhones,
-		loading: state.loading
+		filteredPhoneList: state.filteredPhones,
+		loading: state.loading,
+		error: state.error
 	}
 }
 
@@ -58,7 +74,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		loadPhoneList: () => dispatch ( actions.loadPhoneList() ),
 		searchPhone: (value) => dispatch ( actions.searchPhone(value) ),
-		viewAll: () => dispatch ( actions.viewAll() )
+		viewAllPhones: () => dispatch ( actions.viewAllPhones() )
 	}
 }
 
