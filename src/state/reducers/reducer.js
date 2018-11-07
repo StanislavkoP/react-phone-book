@@ -2,7 +2,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 
 const initialState = {
-	phones: [],
+	phonesInit: [],
 	filteredPhones: [],
 	loading: false,
 	error: null
@@ -18,7 +18,7 @@ const loadPhoneListStart = (state, action) => {
 const loadPhoneListSucces = (state, action) => {
 	return {
 		...state,
-		phones: [
+		phonesInit: [
 			...action.phoneList
 		],
 		filteredPhones: [
@@ -39,25 +39,44 @@ const loadPhoneListFailed = (state, action) => {
 const searchPhone = (state, action) => {
 	const searchedValue = action.valueInput.toLowerCase();
 	
-	const filteredPhones = state.phones.filter(item => {
-		const firstName = item.firstName.toLowerCase().includes(searchedValue);
-		const lastName = item.lastName.toLowerCase().includes(searchedValue);
-		const company = item.company.toLowerCase().includes(searchedValue);
-		const email = item.contacts.email.toLowerCase().includes(searchedValue);
+	const filteredPhones = state.phonesInit.filter(item => {
+		let firstName;
+		let lastName;
+		let company;
+		let email;
+
+		if (item.contacts) {
+			email =  item.contacts.email.toLowerCase().includes(searchedValue);
+		}
+
+		if (item.firstName) {
+			firstName = item.firstName.toLowerCase().includes(searchedValue);
+		}
+
+		if (item.lastName) {
+			lastName = item.lastName.toLowerCase().includes(searchedValue);
+		}
+
+		if (item.company) {
+			if (item.company.email) {
+				company = item.company.toLowerCase().includes(searchedValue);
+			}
+		}
 
 		return firstName || lastName || company || email
 	})
 
 	return {
 		...state,
-		filteredPhones : filteredPhones
+		filteredPhones : filteredPhones,
+		loading: false
 	}
 }
 
 const viewAllPhones = (state,action) => {
 	return {
 		...state,
-		filteredPhones : [...state.phones]
+		filteredPhones : [...state.phonesInit]
 	}
 }
 
