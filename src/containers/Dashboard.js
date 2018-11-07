@@ -10,11 +10,9 @@ import Input from '../components/Input/Input';
 
 class Dashboard extends Component {
 
-	
 	componentDidMount () {
 		this.props.loadPhoneList()
 	}
-
 
 	searchPost = value => {
 		const inputValue = value.trim();
@@ -25,7 +23,7 @@ class Dashboard extends Component {
 		} else {
 			this.props.viewAllPhones()
 		}
-		
+
 	}
 
 
@@ -34,7 +32,6 @@ class Dashboard extends Component {
 		let phoneList = <Spinner />
 		if (this.props.loading === false) {
 			phoneList = <PhoneList phoneList={ this.props.filteredPhoneList }/>
-
 		}
 
 		let error = null;
@@ -54,11 +51,16 @@ class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	filteredPhoneList: []
+	filteredPhoneList: [],
 }
 
 Dashboard.propTypes = {
-	filteredPhoneList: PropTypes.array.isRequired
+	filteredPhoneList: PropTypes.array.isRequired,
+	loading: PropTypes.bool,
+	error: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.number,
+	])
 }
 
 
@@ -72,9 +74,9 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		loadPhoneList: () => dispatch ( actions.loadPhoneList() ),
-		searchPhone: (value) => dispatch ( actions.searchPhone(value) ),
-		viewAllPhones: () => dispatch ( actions.viewAllPhones() )
+		loadPhoneList: () => dispatch( actions.loadPhoneList() ),
+		searchPhone: (value) => dispatch( actions.searchPhone(value) ),
+		viewAllPhones: () => dispatch( actions.viewAllPhones() )
 	}
 }
 
