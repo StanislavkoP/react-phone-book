@@ -15,8 +15,7 @@ const PhoneList = props => (
 					/>
 			})
 		}
-		
 	</div>
-)
+);
 
 export default PhoneList;
