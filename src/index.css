@@ -1,8 +1,8 @@
 @import './semantic-ui/components/container.css';
 @import './semantic-ui/components/reset.css';
 @import './semantic-ui/components/site.css';
+@import './semantic-ui/components/grid.css';
 @import './semantic-ui/components/header.css';
-@import './semantic-ui/components/list.css';
 @import './semantic-ui/components/card.css';
 @import './semantic-ui/components/input.css';
 @import './semantic-ui/components/search.css';
