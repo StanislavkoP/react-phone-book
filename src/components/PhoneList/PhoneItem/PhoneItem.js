@@ -4,10 +4,7 @@ import './PhoneItem.css';
 
 const DEFAULT_PHOTO = 'https://image.flaticon.com/icons/svg/1077/1077063.svg'
 
-const PhoneItem = props => {
-
-return(
-	<div className="item">
+const PhoneItem = props => (
 		<div className="ui card phoneCard">
 			<div className="image">
 				<img src={props.photo ? props.photo : DEFAULT_PHOTO} alt={`${props.firstName} ${props.lastName}`}/>
@@ -22,8 +19,7 @@ return(
 				</div>
 			</div>
 		</div>
-	</div>
-)};
+);
 
 PhoneItem.defaultProps = {
 	firstName: '',
