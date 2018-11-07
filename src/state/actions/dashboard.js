@@ -32,8 +32,10 @@ export const loadPhoneList = () => {
 
 			})
 			.catch(error => {
-				console.log(error.response);
-				dispatch( loadPhoneListFailed(error.response.statusText) )
+				const errorResponse = error.response;
+				console.log(errorResponse);
+
+				dispatch( loadPhoneListFailed(errorResponse.statusText) )
 			})
 	}
 }
