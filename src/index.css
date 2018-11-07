@@ -1,14 +1,8 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
-    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
+@import './semantic-ui/components/container.css';
+@import './semantic-ui/components/reset.css';
+@import './semantic-ui/components/site.css';
+@import './semantic-ui/components/list.css';
+@import './semantic-ui/components/card.css';
+@import './semantic-ui/components/input.css';
+@import './semantic-ui/components/search.css';
+@import './semantic-ui/components/loader.css';
