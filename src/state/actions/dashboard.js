@@ -14,9 +14,10 @@ const loadPhoneListSuccess = phoneList => {
 	}
 }
 
-const loadPhoneListFailed = () => {
+const loadPhoneListFailed = (error) => {
 	return {
-		type: actionTypes.LOAD_PHONE_LIST_FAILED
+		type: actionTypes.LOAD_PHONE_LIST_FAILED,
+		error: error
 	}
 }
 
@@ -26,29 +27,26 @@ export const loadPhoneList = () => {
 
 		axios.get('https://phone-book-cc717.firebaseio.com/peoples.json')
 			.then(response => {
-				
 				const phoneList = response.data;
-				console.log(phoneList);
 				dispatch( loadPhoneListSuccess(phoneList) )
+
 			})
 			.catch(error => {
-				console.log(error);
-				dispatch( loadPhoneListFailed() )
+				console.log(error.response);
+				dispatch( loadPhoneListFailed(error.response.statusText) )
 			})
 	}
 }
 
 export const searchPhone = (value) => {
-	console.log(value)
 	return {
 		type: actionTypes.SEARCH_PHONE,
 		valueInput: value
 	}
 }
 
-export const viewAll = () => {
-	
+export const viewAllPhones = () => {
 	return {
-		type: actionTypes.VIEW_ALL
+		type: actionTypes.VIEW_ALL_PHONES
 	}
 }
