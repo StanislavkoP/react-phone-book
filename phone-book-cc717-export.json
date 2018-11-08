@@ -1,0 +1,74 @@
+{
+  "peoples" : [ {
+    "company" : "S-Pro",
+    "contacts" : {
+      "phoneNumber" : "(915) 553-5185",
+      "email" : "Petya@mail.com"
+    },
+    "firstName" : "Petya",
+    "id" : 1,
+    "lastName" : "Laptev",
+    "photo" : "https://history.fnal.gov/photos_directors/peoples2.jpg"
+  }, {
+    "company" : "Cubex",
+    "contacts" : {
+      "phoneNumber" : "(215) 627-7526",
+      "email" : "Slavik@gmail.com"
+    },
+    "firstName" : "Slavik",
+    "id" : 2,
+    "lastName" : "Pechkin",
+    "photo" : ""
+
+  }, {
+    "company" : "Light-it",
+    "firstName" : "Lev",
+    "id" : 3,
+    "lastName" : "Luchei",
+    "contacts" : {
+      "phoneNumber" : "(458) 298-0183",
+      "email" : "Luchei213@gmail.com"
+    },
+    "photo" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqlz-qEBboas4XXuLO9peR-Pj2XYmFND4rU741ztezVYf68sv0"
+  }, {
+    "company" : "Apple",
+    "firstName" : "Alyona",
+    "id" : 4,
+    "lastName" : "Simple",
+    "contacts" : {
+      "phoneNumber" : "(888) 932-5490",
+      "email" : "al@mail.com"
+    },
+    "photo" : "https://404store.com/2018/04/09/celebrity-of-the-week-emma-watson-beauty-and-the-beast-hollywood-celebrities-movie-stars-famous-actors-.jpg"
+  }, {
+    "company" : "Light-it",
+    "firstName" : "Natali",
+    "id" : 5,
+    "lastName" : "Hard",
+    "contacts" : {
+      "phoneNumber" : "(833) 888-7506",
+      "email" : "natalihard@mail.ru"
+    },
+    "photo" : "https://cdn.images.express.co.uk/img/dynamic/galleries/x701/389530.jpg"
+  }, {
+    "company" : "Light-it",
+    "firstName" : "Alex",
+    "id" : 6,
+    "lastName" : "Petlya",
+    "contacts" : {
+      "phoneNumber" : "(696) 608-2291",
+      "email" : "alex@mail.ru"
+    },
+    "photo" : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqlz-qEBboas4XXuLO9peR-Pj2XYmFND4rU741ztezVYf68sv0"
+  }, {
+    "company" : "Apple",
+    "firstName" : "Anton",
+    "id" : 7,
+    "lastName" : "Asalam",
+    "contacts" : {
+      "phoneNumber" : "(908) 873-7949",
+      "email" : "anton13@gmail.com"
+    },
+    "photo" : ""
+  } ]
+}
