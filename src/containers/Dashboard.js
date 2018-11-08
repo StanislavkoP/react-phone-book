@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
+import { debounce } from '../shared/index';
 
 import * as actions from '../state/actions/actions';
 
@@ -14,7 +15,7 @@ class Dashboard extends Component {
 		this.props.loadPhoneList()
 	}
 
-	searchPost = value => {
+	searchPost = debounce(value => {
 		const inputValue = value.trim();
 
 		if (inputValue) {
@@ -24,7 +25,7 @@ class Dashboard extends Component {
 			this.props.viewAllPhones()
 		}
 
-	}
+	}, 300)
 
 
 	render () {
