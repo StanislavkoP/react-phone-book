@@ -7,15 +7,16 @@ const DEFAULT_PHOTO = 'https://image.flaticon.com/icons/svg/1077/1077063.svg'
 const PhoneItem = props => (
 		<div className="ui card phoneCard">
 			<div className="image">
-				<img src={props.photo ? props.photo : DEFAULT_PHOTO} alt={`${props.firstName} ${props.lastName}`}/>
+				<img src={ props.photo ? props.photo : DEFAULT_PHOTO } alt={ `${ props.firstName } ${ props.lastName }` }/>
 			</div>
 			<div className="content">
-				<div className="header">{`${props.firstName} ${props.lastName}`}</div>
+				<div className="header">{ `${ props.firstName } ${ props.lastName }` }</div>
 				<div className="meta">
-					<span className="date">{props.company}</span>
+					<span className="date">{ props.company }</span>
 				</div>
 				<div className="description">
-					{props.contacts.email}
+					<p>{ props.contacts.phoneNumber }</p>
+					<p>{ props.contacts.email }</p>
 				</div>
 			</div>
 		</div>
