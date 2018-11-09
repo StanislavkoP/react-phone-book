@@ -5,6 +5,7 @@ const initialState = {
 	phonesInit: [],
 	filteredPhones: [],
 	loading: false,
+	loadingNewContact: false,
 	error: null
 }
 
@@ -36,44 +37,40 @@ const loadPhoneListFailed = (state, action) => {
 	}
 }
 
-const searchPhone = (state, action) => {
-	const searchedValue = action.valueInput.toLowerCase();
-	
-	const filteredPhones = state.phonesInit.filter(item => {
-		let firstName;
-		let lastName;
-		let company;
-		let phoneNumber;
-		let email;
-
-		if (item.contacts) {
-			if (item.contacts.email) {
-				email =  item.contacts.email.toLowerCase().includes(searchedValue);
-			}
-
-			if (item.contacts.phoneNumber) {
-				phoneNumber = item.contacts.phoneNumber.toString().toLowerCase().includes(searchedValue);
-			}
-		}
-
-		if (item.firstName) {
-			firstName = item.firstName.toLowerCase().includes(searchedValue);
-		}
-
-		if (item.lastName) {
-			lastName = item.lastName.toLowerCase().includes(searchedValue);
-		}
-
-		if (item.company) {
-			company = item.company.toLowerCase().includes(searchedValue);
-		}
-
-		return firstName || lastName || company || phoneNumber || email
-	})
-
+const onAddContactStart = (state, action) => {
 	return {
 		...state,
-		filteredPhones : filteredPhones,
+		loadingNewContact: true
+	}
+}
+
+const onAddContactSucces = (state, action) => {
+	return {
+		...state,
+		phonesInit: [
+			...state.phonesInit,
+			action.newContact
+		],
+		filteredPhones: [
+			...state.filteredPhones,
+			action.newContact
+		],
+		loadingNewContact: false
+	}
+}
+
+const onAddContactFailed = (state, action) => {
+	return {
+		...state,
+		loadingNewContact: false,
+		error: action.error
+	}
+}
+
+const searchPhone = (state, action) => {
+	return {
+		...state,
+		filteredPhones : action.filteredPhonesList,
 		loading: false
 	}
 }
@@ -90,6 +87,9 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.LOAD_PHONE_LIST_START : return loadPhoneListStart(state, action);
 		case actionTypes.LOAD_PHONE_LIST_SUCCESS : return loadPhoneListSucces(state, action);
 		case actionTypes.LOAD_PHONE_LIST_FAILED : return loadPhoneListFailed(state, action);
+		case actionTypes.ADD_CONTACT_START : return onAddContactStart(state, action);
+		case actionTypes.ADD_CONTACT_SUCCESS : return onAddContactSucces(state, action);
+		case actionTypes.ADD_CONTACT_FAILED : return onAddContactFailed(state, action);
 		case actionTypes.SEARCH_PHONE : return searchPhone(state, action);
 		case actionTypes.VIEW_ALL_PHONES : return viewAllPhones(state, action);
 		default: return state;
