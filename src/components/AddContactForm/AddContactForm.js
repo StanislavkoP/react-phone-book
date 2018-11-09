@@ -73,7 +73,7 @@ const AddContactForm = props =>  (
 
 		<button 
 			className={`ui primary button ${props.loading ? 'loading' : ''}`}
-			
+			disabled={!props.disablingForm}
 			type="submit"
 		>
 			Submit
