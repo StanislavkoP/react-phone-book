@@ -152,7 +152,6 @@ class Dashboard extends Component {
 
 
 	render () {
-		console.log(this.props.newContactLoading);
 		let phoneList = <Spinner />
 		if (this.props.loading === false) {
 			phoneList = (
@@ -211,7 +210,6 @@ Dashboard.propTypes = {
 
 
 const mapStateToProps = state => {
-	console.log(state)
 	return {
 		phonesListInit: state.phonesInit,
 		filteredPhoneList: state.filteredPhones,

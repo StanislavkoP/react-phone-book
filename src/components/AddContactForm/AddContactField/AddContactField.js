@@ -6,8 +6,6 @@ const AddContactField = props => {
 		errorClass = 'error';
 	}
 
-	console.log(props.isValid);
-
 	return(
 		<div className={`field ${ errorClass }`}>
 			<label>{ props.label }</label>
