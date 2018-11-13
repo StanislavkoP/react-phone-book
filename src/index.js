@@ -4,15 +4,14 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
-import {createStore,  applyMiddleware, compose} from 'redux';
+import {createStore,  applyMiddleware} from 'redux';
+import {composeWithDevTools} from 'redux-devtools-extension';
 import {Provider} from 'react-redux';
 import thunk from 'redux-thunk';
 
 import reducer from './state/reducers/reducer';
 
 const rootReducer = reducer;
-
-const composeEnhancers = process.env.NODE_ENV === "development" ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ : null || compose
 
 const configurateStore = (initialState = {}) => {
 	const middleWares = [
@@ -26,7 +25,7 @@ const configurateStore = (initialState = {}) => {
 	const store = createStore(
 		rootReducer,
 		initialState,
-		composeEnhancers( ...enchansers )
+		composeWithDevTools( ...enchansers )
 	)
 
 	return store
