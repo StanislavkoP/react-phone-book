@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { debounce, updateObject, checkValidity } from '../shared/index';
 
 import * as actions from '../state/actions/actions';
+import validationForm from '../shared/validationForm';
 
 import PhoneList from '../components/PhoneList/PhoneList';
 import AddContactForm from '../components/AddContactForm/AddContactForm';
@@ -18,7 +19,9 @@ class Dashboard extends Component {
 				inputIdentifier: 'firstName',
 				value: '',
 				validation: {
-					isName: true
+					isName: true,
+					maxLength: 10,
+					isRequired: true,
 				},
 				valid: {
 					isValid: false,
@@ -30,7 +33,8 @@ class Dashboard extends Component {
 				inputIdentifier: 'lastName',
 				value: '',
 				validation: {
-					isLastName: true
+					isLastName: true,
+					isRequired: true,
 				},
 				valid: {
 					isValid: false,
@@ -42,7 +46,7 @@ class Dashboard extends Component {
 				inputIdentifier: 'photo',
 				value: '',
 				validation: {
-					isPhotoLink: true
+					isPhotoLink: true,
 				},
 				valid: {
 					isValid: false,
@@ -54,7 +58,8 @@ class Dashboard extends Component {
 				inputIdentifier: 'company',
 				value: '',
 				validation: {
-					isCompany: true
+					isCompany: true,
+					isRequired: true,
 				},
 				valid: {
 					isValid: false,
@@ -66,7 +71,8 @@ class Dashboard extends Component {
 				inputIdentifier: 'email',
 				value: '',
 				validation: {
-					isEmail: true
+					isEmail: true,
+					isRequired: true,
 				},
 				valid: {
 					isValid: false,
@@ -78,7 +84,8 @@ class Dashboard extends Component {
 				inputIdentifier: 'phoneNumber',
 				value: '',
 				validation: {
-					isPhoneNumber: true
+					isPhoneNumber: true,
+					isRequired: true,
 				},
 				valid: {
 					isValid: false,
@@ -107,21 +114,26 @@ class Dashboard extends Component {
 	}, 300)
 
 	changeInputHandler = (event, inputIdentifier) => {
+		let inputValue = event.target.value;
+		const maxLengthInput = this.state.inputs[inputIdentifier].validation.maxLength;
+
+		if (inputValue.length > maxLengthInput) {
+			// In the end +Number is reserve for warning if value length longer then max length validation
+			inputValue = inputValue.substring(0, maxLengthInput + 2);
+		
+		}
 
 		const updatedFormElement = updateObject(this.state.inputs[inputIdentifier], {
-			value: event.target.value,
-			valid: checkValidity(event.target.value, this.state.inputs[inputIdentifier].validation),
+			value: inputValue,
+			valid: checkValidity(inputValue, this.state.inputs[inputIdentifier].validation),
 			touched: true
 		});
 		
-			const updatedOrderForm = updateObject(this.state.inputs, {
+		const updatedOrderForm = updateObject(this.state.inputs, {
 			[inputIdentifier]: updatedFormElement
 		}); 
-		
-		let formIsValid = true;
-		for (let inputIdentifier in updatedOrderForm) {
-			formIsValid = updatedOrderForm[inputIdentifier].valid.isValid && formIsValid;
-		}
+
+		let formIsValid = validationForm(updatedOrderForm);
 		
 		this.setState({inputs: updatedOrderForm, formIsValid: formIsValid});
 	}
