@@ -147,7 +147,6 @@ class Dashboard extends Component {
 		}
 		
 		contactData = {
-			id: new Date().getTime(),
 			firstName: contactData.firstName,
 			lastName: contactData.lastName,
 			company: contactData.company,
@@ -164,6 +163,9 @@ class Dashboard extends Component {
 
 
 	render () {
+		const { filteredPhoneList, onDeleteContact, loadingNewContact } = this.props;
+		const { inputs, formIsValid } = this.state;
+
 		let phoneList = <Spinner />
 		if (this.props.loading === false) {
 			phoneList = (
@@ -172,22 +174,29 @@ class Dashboard extends Component {
 						change={ (e, inputIdentifier) => this.changeInputHandler(e, inputIdentifier) }
 						addContact={ this.addContact }
 
-						dataOfName={ this.state.inputs.firstName }
-						dataOfLastName={ this.state.inputs.lastName }
-						dataOfCompany={ this.state.inputs.company }
-						dataOfPhoto={ this.state.inputs.photo }
-						dataOfPhoneNumber={ this.state.inputs.phoneNumber }
-						dataOfEmail={ this.state.inputs.email }
+						dataOfName={ inputs.firstName }
+						dataOfLastName={ inputs.lastName }
+						dataOfCompany={ inputs.company }
+						dataOfPhoto={ inputs.photo }
+						dataOfPhoneNumber={ inputs.phoneNumber }
+						dataOfEmail={ inputs.email }
 						
-						disablingForm={ !this.state.formIsValid }
-						loading={this.props.loadingNewContact}
+						disablingForm={ !formIsValid }
+						loading={ loadingNewContact }
 					/>
 
 					<div className="ui input fluid focus">
-						<Input classes="searchPhone big" placeholder='Search' change={(e) => this.searchPost(e.currentTarget.value)} />
+						<Input 
+							classes="searchPhone big" 
+							placeholder='Search' 
+							change={ (e) => this.searchPost(e.currentTarget.value) } /
+							>
 					</div>
 
-					<PhoneList phoneList={ this.props.filteredPhoneList }/>
+					<PhoneList 
+						phoneList={ filteredPhoneList }
+						deleteContact={ (contactId) => onDeleteContact(contactId) }
+					/>
 				</React.Fragment>
 			)
 		}
@@ -235,6 +244,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		loadPhoneList: () => dispatch( actions.loadPhoneList() ),
 		onAddContact: (contactData) => dispatch( actions.onAddContact(contactData) ),
+		onDeleteContact: (contactId) => dispatch( actions.onDeleteContact(contactId) ),
 		searchPhone: (value, phoneListInit) => dispatch( actions.searchPhone(value, phoneListInit) ),
 		viewAllPhones: () => dispatch( actions.viewAllPhones() )
 	}
