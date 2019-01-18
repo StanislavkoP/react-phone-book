@@ -18,6 +18,18 @@ const PhoneItem = props => (
 					<p>{ props.contacts.phoneNumber }</p>
 					<p>{ props.contacts.email }</p>
 				</div>
+
+				<div style={{display: 'flex', justifyContent: 'space-between', marginTop: 'auto'}}>
+				<button className="ui primary button">
+					Edit
+				</button>
+				<button 
+					className="ui negative button"
+					onClick={props.deleteContact} 
+				>
+					Delete
+				</button>
+			</div>
 			</div>
 		</div>
 );
@@ -26,7 +38,7 @@ PhoneItem.defaultProps = {
 	firstName: '',
 	lastName: '',
 	company: '',
-	photo: DEFAULT_PHOTO,
+	photo: '',
 	contacts: {}
 }
 

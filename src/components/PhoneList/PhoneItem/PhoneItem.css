@@ -6,3 +6,12 @@
 .ui.card.phoneCard > .image > img {
 	height: 200px;
 }
+
+.ui.cards > .card > .content, .ui.card > .content {
+	display: flex;
+	flex-direction: column;
+}
+
+.ui.cards > .card > .content > .description, .ui.card > .content > .description {
+	margin-bottom: 12px;
+}
