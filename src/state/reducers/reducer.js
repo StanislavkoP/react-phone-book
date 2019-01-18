@@ -67,6 +67,23 @@ const onAddContactFailed = (state, action) => {
 	}
 }
 
+const onDeleteContactSuccess = (state, action) => ({
+	...state,
+	phonesInit: [
+		...action.newPhoneList
+	],
+	filteredPhones: [
+		...action.newPhoneList
+	],
+	loading: false
+});
+
+const onDeleteContactFailed = (state, action) => ({
+	...state,
+	error: action.error,
+	loading: false
+});
+
 const searchPhone = (state, action) => {
 	return {
 		...state,
@@ -90,6 +107,8 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.ADD_CONTACT_START : return onAddContactStart(state, action);
 		case actionTypes.ADD_CONTACT_SUCCESS : return onAddContactSucces(state, action);
 		case actionTypes.ADD_CONTACT_FAILED : return onAddContactFailed(state, action);
+		case actionTypes.DELETE_CONTACT_SUCCESS : return onDeleteContactSuccess(state, action);
+		case actionTypes.DELETE_CONTACT_FAILED : return onDeleteContactFailed(state, action);
 		case actionTypes.SEARCH_PHONE : return searchPhone(state, action);
 		case actionTypes.VIEW_ALL_PHONES : return viewAllPhones(state, action);
 		default: return state;
