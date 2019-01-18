@@ -28,8 +28,9 @@ export const loadPhoneList = () => {
 		axios.get('https://phone-book-cc717.firebaseio.com/peoples.json')
 			.then(response => {
 				const contactsData = response.data
-				const phoneList = Object.keys(contactsData).map(item => contactsData[item]);
-
+				const idsEachContact = Object.keys(contactsData);
+				const phoneList = idsEachContact.map(item => ({...contactsData[item], id: item}) );
+				
 				dispatch( loadPhoneListSuccess(phoneList) )
 
 			})
@@ -109,22 +110,56 @@ const onAddContactFailed = (error) => {
 	}
 }
 
-export const onAddContact = (contactData) => {
+export const onAddContact = (contactData) => dispatch => {
 
+	dispatch( onAddContactStart() );
 
-	return dispatch => {
-		dispatch( onAddContactStart() );
+	axios.post('https://phone-book-cc717.firebaseio.com/peoples.json', contactData)
+		.then(response => {
+			dispatch( onAddContactSuccess(contactData) )
 
-		axios.post('https://phone-book-cc717.firebaseio.com/peoples.json', contactData)
-			.then(response => {
-				dispatch( onAddContactSuccess(contactData) )
+		})
+		.catch(error => {
+			const errorResponse = error.response;
+			console.log(errorResponse);
 
-			})
-			.catch(error => {
-				const errorResponse = error.response;
-				console.log(errorResponse);
+			dispatch( onAddContactFailed(errorResponse.statusText) )
+		})
+};
 
-				dispatch( onAddContactFailed(errorResponse.statusText) )
-			})
+const onDeleteContactInit = () => ({
+	type: actionTypes.LOAD_PHONE_LIST_START
+});
+
+const onDeleteContactSuccess = (deletedContactId, oldPhoneList) => {
+	const newPhoneList = oldPhoneList.filter(contact => contact.id !== deletedContactId);
+
+	return {
+		type: actionTypes.DELETE_CONTACT_SUCCESS,
+		newPhoneList,
 	}
+}
+
+const onDeleteContactFailed = error => ({
+	type: actionTypes.DELETE_CONTACT_FAILED,
+	error
+});
+
+export const onDeleteContact = contactId => (dispatch, getState) => {
+	dispatch( onDeleteContactInit() )
+
+	axios
+		.delete(`https://phone-book-cc717.firebaseio.com/peoples/${contactId}.json`)
+		.then(response => {
+			const oldPhoneList = getState().phonesInit;
+
+			dispatch( onDeleteContactSuccess(contactId, oldPhoneList) )
+
+		})
+		.catch(error => {
+			const errorResponsed = error.response;
+			console.log(errorResponsed);
+			dispatch( onDeleteContactFailed(errorResponsed) )
+		})
+
 }
