@@ -2,5 +2,6 @@ export {
 	loadPhoneList,
 	searchPhone,
 	viewAllPhones,
-	onAddContact
+	onAddContact,
+	onDeleteContact
 } from './dashboard';
