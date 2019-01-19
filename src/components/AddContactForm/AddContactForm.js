@@ -3,7 +3,7 @@ import React from 'react';
 import AddContactField from './AddContactField/AddContactField';
 
 const AddContactForm = props =>  (
-	<form className="ui form" onSubmit={ props.addContact }>
+	<form className="ui form" ref={props.refForm}>
 		<h2 className="ui dividing header">Adding contact</h2>
 			<div className="two fields">
 				<AddContactField
@@ -71,13 +71,39 @@ const AddContactForm = props =>  (
 				/>
 			</div>
 
-		<button 
-			className={`ui primary button ${props.loading ? 'loading' : ''}`}
-			disabled={props.disablingForm}
-			type="submit"
-		>
-			Submit
-		</button>
+		{
+			props.formIsEditing
+			? (
+				<div>
+					<button 
+						className={`ui positive button ${props.loading ? 'loading' : ''}`}
+						disabled={props.disablingForm}
+						type="submit"
+						onClick={ props.updateContact }
+					>
+						Update
+					</button>
+					<button 
+						className={`ui negative button ${props.loading ? 'loading' : ''}`}
+						type="button"
+						onClick={ props.cancelEditing }
+					>
+						Cancel
+					</button>
+				</div>
+			)
+			: (
+				<button 
+				className={`ui primary button ${props.loading ? 'loading' : ''}`}
+				disabled={props.disablingForm}
+				type="submit"
+				onClick={ props.addContact }
+			>
+				Submit
+			</button>
+			)
+		}
+
 	</form>
 	);
 
