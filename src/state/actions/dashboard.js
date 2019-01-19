@@ -45,46 +45,10 @@ export const loadPhoneList = () => {
 	}
 }
 
-export const searchPhone = (valueInput, phonesList) => {
-	const searchedValue = valueInput.toLowerCase();
-
-	const filteredPhones = phonesList.filter(item => {
-		let firstName;
-		let lastName;
-		let company;
-		let phoneNumber;
-		let email;
-
-		if (item.contacts) {
-			if (item.contacts.email) {
-				email =  item.contacts.email.toLowerCase().includes(searchedValue);
-			}
-
-			if (item.contacts.phoneNumber) {
-				phoneNumber = item.contacts.phoneNumber.toString().toLowerCase().includes(searchedValue);
-			}
-		}
-
-		if (item.firstName) {
-			firstName = item.firstName.toLowerCase().includes(searchedValue);
-		}
-
-		if (item.lastName) {
-			lastName = item.lastName.toLowerCase().includes(searchedValue);
-		}
-
-		if (item.company) {
-			company = item.company.toLowerCase().includes(searchedValue);
-		}
-
-		return firstName || lastName || company || phoneNumber || email
-	})
-
-	return {
-		type: actionTypes.SEARCH_PHONE,
-		filteredPhonesList: filteredPhones
-	}
-}
+export const searchPhone = (valueInput) => ({
+	type: actionTypes.SEARCH_PHONE,
+	searchedText: valueInput,
+});
 
 export const viewAllPhones = () => {
 	return {
