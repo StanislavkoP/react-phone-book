@@ -4,7 +4,7 @@ import AddContactField from './AddContactField/AddContactField';
 
 const AddContactForm = props =>  (
 	<form className="ui form" onSubmit={ props.addContact }>
-		<h4 className="ui dividing header">Adding contact</h4>
+		<h2 className="ui dividing header">Adding contact</h2>
 			<div className="two fields">
 				<AddContactField
 					errorMessage={ props.dataOfName.valid.errorMessage }
