@@ -2,7 +2,7 @@ import React from 'react';
 import PhoneItem from './PhoneItem/PhoneItem';
 
 const PhoneList = props => {
-	const { phoneList, deleteContact } = props;
+	const { phoneList, deleteContact, editContact } = props;
 	
 	return ( 
 		<div className="ui cards">
@@ -17,6 +17,7 @@ const PhoneList = props => {
 							contacts={phone.contacts}
 
 							deleteContact={ () => deleteContact(phone.id) }
+							editContact={ () => editContact(phone.id) }
 						/>
 					)
 				)
