@@ -3,7 +3,7 @@ import * as actionTypes from '../actions/actionTypes';
 
 const initialState = {
 	phonesInit: [],
-	filteredPhones: [],
+	searchedText: '',
 	loading: false,
 	loadingNewContact: false,
 	error: null
@@ -97,7 +97,7 @@ const onDeleteContactFailed = (state, action) => ({
 const searchPhone = (state, action) => {
 	return {
 		...state,
-		filteredPhones : action.filteredPhonesList,
+		searchedText: action.searchedText,
 		loading: false
 	}
 }
