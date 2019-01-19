@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { debounce, updateObject, checkValidity } from '../shared/index';
 
 import * as actions from '../state/actions/actions';
-import validationForm from '../shared/validationForm';
+import { clearForm, checkFormValidation, getDataFromInputs } from '../shared/formHelpres.js';
 
 import PhoneList from '../components/PhoneList/PhoneList';
 import AddContactForm from '../components/AddContactForm/AddContactForm';
@@ -94,12 +94,14 @@ class Dashboard extends Component {
 				touched: false
 			},
 		},
-		formIsValid: false
-	}
+		updatingContactId: null,
+		formIsEditing: false,
+		formIsValid: false,
+	};
 
 	componentDidMount () {
 		this.props.loadPhoneList()
-	}
+	};
 
 	searchPost = debounce((value) => {
 		const inputValue = value.trim();
@@ -111,7 +113,7 @@ class Dashboard extends Component {
 			this.props.viewAllPhones()
 		}
 
-	}, 300)
+	}, 400);
 
 	changeInputHandler = (event, inputIdentifier) => {
 		let inputValue = event.target.value;
@@ -133,59 +135,90 @@ class Dashboard extends Component {
 			[inputIdentifier]: updatedFormElement
 		}); 
 
-		let formIsValid = validationForm(updatedOrderForm);
+		let formIsValid = checkFormValidation(updatedOrderForm);
 		
 		this.setState({inputs: updatedOrderForm, formIsValid: formIsValid});
-	}
+	};
 
 	addContact = ( event ) => {
 		event.preventDefault();
-		let contactData = {};
+		const contactData = getDataFromInputs(this.state.inputs);
 
-		for (let formElementIdentifier in this.state.inputs) {
-			contactData[formElementIdentifier] = this.state.inputs[formElementIdentifier].value;
-		
-		}
-		
-		contactData = {
-			firstName: contactData.firstName,
-			lastName: contactData.lastName,
-			company: contactData.company,
-			contacts: {
-				email: contactData.email,
-				phoneNumber: contactData.phoneNumber,
-			},
-			photo: contactData.photo
-
-		}
-
-		const clearFormElements = {};
-
-		for (let inputIdentifier in this.state.inputs){
-			const updatedFormElements = updateObject(this.state.inputs[inputIdentifier], {
-				value: '',
-			});
-
-			clearFormElements[inputIdentifier] = updatedFormElements;
-		}
-
-		this.setState({inputs: clearFormElements})
+		const clearedFormInputs = clearForm(this.state.inputs);
+		this.setState({inputs: clearedFormInputs})
 
 		this.props.onAddContact(contactData)
+	}
+
+	onEditContact(contactId) {
+		const editedContact = this.props.phonesListInit.find(contact => contact.id === contactId);
+		
+		const formElemetsWithData = {};
+		formElemetsWithData.firstName = editedContact.firstName;
+		formElemetsWithData.lastName = editedContact.lastName;
+		formElemetsWithData.photo = editedContact.photo;
+		formElemetsWithData.company = editedContact.company;
+		formElemetsWithData.email = editedContact.contacts.email;
+		formElemetsWithData.phoneNumber = editedContact.contacts.phoneNumber;
+
+		
+		const updatedFormElements = {};
+		for (let inputIdentifier in this.state.inputs){
+			
+			const inputValue = formElemetsWithData[inputIdentifier];
+			const updatedFormElement = updateObject(this.state.inputs[inputIdentifier], {
+				value: formElemetsWithData[inputIdentifier],
+				valid: checkValidity(inputValue, this.state.inputs[inputIdentifier].validation),
+			});
+			
+			updatedFormElements[inputIdentifier] = updatedFormElement;
+		};
+
+		this.setState({
+			inputs: updatedFormElements,
+			updatingContactId: contactId,
+			formIsEditing: true, 
+		});
+
+		this.refForm.scrollIntoView();
+	};
+
+	onCancelEditing = () => {
+		const clearedFormInputs = clearForm(this.state.inputs);
+
+		this.setState({
+			inputs: clearedFormInputs,
+			formIsValid: false,
+			formIsEditing: false,
+		});
+	
+	};
+
+	onUpdateContact = (event) => {
+		event.preventDefault();
+		
+		const contactId = this.state.updatingContactId; 
+		const contactData = getDataFromInputs(this.state.inputs);
+		
+		this.props.onUpdateContact(contactData, contactId)
 	}
 
 
 	render () {
 		const { filteredPhoneList, onDeleteContact, loadingNewContact, error } = this.props;
-		const { inputs, formIsValid } = this.state;
+		const { inputs, formIsEditing, formIsValid } = this.state;
 
 		let phoneList = <Spinner />
 		if (this.props.loading === false) {
 			phoneList = (
 				<React.Fragment>
 					<AddContactForm
+						refForm={(refForm) => (this.refForm = refForm)}
+						
 						change={ (e, inputIdentifier) => this.changeInputHandler(e, inputIdentifier) }
 						addContact={ this.addContact }
+						cancelEditing={ this.onCancelEditing }
+						updateContact={ this.onUpdateContact }
 
 						dataOfName={ inputs.firstName }
 						dataOfLastName={ inputs.lastName }
@@ -195,6 +228,7 @@ class Dashboard extends Component {
 						dataOfEmail={ inputs.email }
 						
 						disablingForm={ !formIsValid }
+						formIsEditing={ formIsEditing }
 						loading={ loadingNewContact }
 					/>
 
@@ -209,6 +243,7 @@ class Dashboard extends Component {
 					<PhoneList 
 						phoneList={ filteredPhoneList }
 						deleteContact={ (contactId) => onDeleteContact(contactId) }
+						editContact={ (contactId) => this.onEditContact(contactId) }
 					/>
 				</React.Fragment>
 			)
@@ -257,6 +292,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		loadPhoneList: () => dispatch( actions.loadPhoneList() ),
 		onAddContact: (contactData) => dispatch( actions.onAddContact(contactData) ),
+		onUpdateContact: (contactData, contactId) => dispatch( actions.onUpdateContact(contactData, contactId) ),
 		onDeleteContact: (contactId) => dispatch( actions.onDeleteContact(contactId) ),
 		searchPhone: (value, phoneListInit) => dispatch( actions.searchPhone(value, phoneListInit) ),
 		viewAllPhones: () => dispatch( actions.viewAllPhones() )
