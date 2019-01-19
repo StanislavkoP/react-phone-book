@@ -67,6 +67,16 @@ const onAddContactFailed = (state, action) => {
 	}
 }
 
+const onUpdateContactSuccess = (state, action) => ({
+	...state,
+	phonesInit: action.updatedPhoneList,
+});
+
+const onUpdateContactFailed = (state, action) => ({
+	...state,
+	error: action.error,
+});
+
 const onDeleteContactSuccess = (state, action) => ({
 	...state,
 	phonesInit: [
@@ -104,11 +114,17 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.LOAD_PHONE_LIST_START : return loadPhoneListStart(state, action);
 		case actionTypes.LOAD_PHONE_LIST_SUCCESS : return loadPhoneListSucces(state, action);
 		case actionTypes.LOAD_PHONE_LIST_FAILED : return loadPhoneListFailed(state, action);
+		
 		case actionTypes.ADD_CONTACT_START : return onAddContactStart(state, action);
 		case actionTypes.ADD_CONTACT_SUCCESS : return onAddContactSucces(state, action);
 		case actionTypes.ADD_CONTACT_FAILED : return onAddContactFailed(state, action);
+		
+		case actionTypes.UPDATE_CONTACT_SUCCESS : return onUpdateContactSuccess(state, action);
+		case actionTypes.UPDATE_CONTACT_FAILED : return onUpdateContactFailed(state, action);
+		
 		case actionTypes.DELETE_CONTACT_SUCCESS : return onDeleteContactSuccess(state, action);
 		case actionTypes.DELETE_CONTACT_FAILED : return onDeleteContactFailed(state, action);
+		
 		case actionTypes.SEARCH_PHONE : return searchPhone(state, action);
 		case actionTypes.VIEW_ALL_PHONES : return viewAllPhones(state, action);
 		default: return state;

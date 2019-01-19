@@ -3,5 +3,6 @@ export {
 	searchPhone,
 	viewAllPhones,
 	onAddContact,
-	onDeleteContact
+	onDeleteContact,
+	onUpdateContact,
 } from './dashboard';
