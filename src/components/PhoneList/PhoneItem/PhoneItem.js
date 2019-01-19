@@ -20,7 +20,10 @@ const PhoneItem = props => (
 				</div>
 
 				<div style={{display: 'flex', justifyContent: 'space-between', marginTop: 'auto'}}>
-				<button className="ui primary button">
+				<button 
+					className="ui primary button"
+					onClick={props.editContact} 
+				>
 					Edit
 				</button>
 				<button 
