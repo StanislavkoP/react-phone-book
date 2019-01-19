@@ -1,3 +1,5 @@
+import isEmpty from './isEmpty';
+
 export const debounce = (func, wait, immediate) => {
 	var timeout;
 	return function() {
@@ -33,10 +35,17 @@ export const checkValidity = (value, rules) => {
 		};
 	}
 
-	if (value.trim().length <= 0) {
+	if (isEmpty(value) && rules.isRequired) {
 		return {
 			isValid: false,
 			errorMessage:  'Fill in the field'
+		};
+	}
+
+	if (isEmpty(value) && !rules.isRequired) {
+		return {
+			isValid: true,
+			errorMessage:  null
 		};
 	}
 	
