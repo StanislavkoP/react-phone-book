@@ -116,7 +116,13 @@ export const onAddContact = (contactData) => dispatch => {
 
 	axios.post('https://phone-book-cc717.firebaseio.com/peoples.json', contactData)
 		.then(response => {
-			dispatch( onAddContactSuccess(contactData) )
+			const newIdContact = response.data.name;
+			const newContact = {
+				id: newIdContact,
+				...contactData,
+			};
+
+			dispatch( onAddContactSuccess(newContact) )
 
 		})
 		.catch(error => {
