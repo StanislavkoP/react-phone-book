@@ -72,7 +72,7 @@ export const checkValidity = (value, rules) => {
 	}
 
 	if (rules.isPhoneNumber) {
-		const pattern = /^(\([0-9]{0,3}\)\s{1}|[0-9]{3}\-)[0-9]{3}-[0-9]{4}$/;
+		const pattern = /^(\([0-9]{0,3}\)\s{1}|[0-9]{3}-)[0-9]{3}-[0-9]{4}$/;
 		isValid = pattern.test(value) && isValid;
 		errorMessage = isValid === false ? 'This must be like (xxx) xxx-xxxx' : null;
 		
