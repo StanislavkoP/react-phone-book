@@ -176,7 +176,7 @@ class Dashboard extends Component {
 
 
 	render () {
-		const { filteredPhoneList, onDeleteContact, loadingNewContact } = this.props;
+		const { filteredPhoneList, onDeleteContact, loadingNewContact, error } = this.props;
 		const { inputs, formIsValid } = this.state;
 
 		let phoneList = <Spinner />
@@ -202,8 +202,8 @@ class Dashboard extends Component {
 						<Input 
 							classes="searchPhone big" 
 							placeholder='Search' 
-							change={ (e) => this.searchPost(e.currentTarget.value) } /
-							>
+							change={ (e) => this.searchPost(e.currentTarget.value) } 
+						/>
 					</div>
 
 					<PhoneList 
@@ -214,15 +214,15 @@ class Dashboard extends Component {
 			)
 		}
 
-		let error = null;
-		if (this.props.error) {
-			error = <h4 className="ui red header">{ this.props.error }</h4>
+		let errorContent = null;
+		if (error) {
+			errorContent = <h4 className="ui red header">{ error }</h4>
 		}
 
 		return (
 			<React.Fragment>
 				{ phoneList }
-				{ error }
+				{ errorContent }
 			</React.Fragment>
 			
 		)
