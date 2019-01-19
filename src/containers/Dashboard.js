@@ -143,7 +143,8 @@ class Dashboard extends Component {
 		let contactData = {};
 
 		for (let formElementIdentifier in this.state.inputs) {
-			contactData[formElementIdentifier] = this.state.inputs[formElementIdentifier].value
+			contactData[formElementIdentifier] = this.state.inputs[formElementIdentifier].value;
+		
 		}
 		
 		contactData = {
@@ -157,6 +158,18 @@ class Dashboard extends Component {
 			photo: contactData.photo
 
 		}
+
+		const clearFormElements = {};
+
+		for (let inputIdentifier in this.state.inputs){
+			const updatedFormElements = updateObject(this.state.inputs[inputIdentifier], {
+				value: '',
+			});
+
+			clearFormElements[inputIdentifier] = updatedFormElements;
+		}
+
+		this.setState({inputs: clearFormElements})
 
 		this.props.onAddContact(contactData)
 	}
