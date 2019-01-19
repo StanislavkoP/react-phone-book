@@ -35,8 +35,8 @@ export const checkValidity = (value, rules) => {
 
 	if (value.trim().length <= 0) {
 		return {
-			isValid: true,
-			errorMessage:  null
+			isValid: false,
+			errorMessage:  'Fill in the field'
 		};
 	}
 	
@@ -51,6 +51,7 @@ export const checkValidity = (value, rules) => {
 		const pattern = /^\s*[A-Za-z]{1,}([-'`])?[A-Za-z]{1,}\s*$/;
 		isValid = pattern.test(value) && isValid;
 		errorMessage = isValid === false ? 'This must contain one English word' : null;
+		console.log(isValid)
 	}
 
 	if (rules.isLastName) {
