@@ -5,6 +5,7 @@ import { debounce, updateObject, checkValidity } from '../shared/index';
 
 import * as actions from '../state/actions/actions';
 import { clearForm, checkFormValidation, getDataFromInputs } from '../shared/formHelpres.js';
+import filterPhoneList from '../selects/filterPhoneList';
 
 import PhoneList from '../components/PhoneList/PhoneList';
 import AddContactForm from '../components/AddContactForm/AddContactForm';
@@ -105,13 +106,8 @@ class Dashboard extends Component {
 
 	searchPost = debounce((value) => {
 		const inputValue = value.trim();
-
-		if (inputValue) {
-			this.props.searchPhone(inputValue, this.props.phonesListInit)
-
-		} else {
-			this.props.viewAllPhones()
-		}
+		
+		this.props.searchPhone(inputValue)
 
 	}, 400);
 
@@ -205,7 +201,7 @@ class Dashboard extends Component {
 
 
 	render () {
-		const { filteredPhoneList, onDeleteContact, loadingNewContact, error } = this.props;
+		const { phonesListInit, onDeleteContact, loadingNewContact, error } = this.props;
 		const { inputs, formIsEditing, formIsValid } = this.state;
 
 		let phoneList = <Spinner />
@@ -241,7 +237,7 @@ class Dashboard extends Component {
 					</div>
 
 					<PhoneList 
-						phoneList={ filteredPhoneList }
+						phoneList={ phonesListInit }
 						deleteContact={ (contactId) => onDeleteContact(contactId) }
 						editContact={ (contactId) => this.onEditContact(contactId) }
 					/>
@@ -265,11 +261,10 @@ class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	filteredPhoneList: [],
+	phonesListInit: [],
 }
 
 Dashboard.propTypes = {
-	filteredPhoneList: PropTypes.array.isRequired,
 	loading: PropTypes.bool,
 	error: PropTypes.oneOfType([
 		PropTypes.string,
@@ -280,8 +275,7 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => {
 	return {
-		phonesListInit: state.phonesInit,
-		filteredPhoneList: state.filteredPhones,
+		phonesListInit: filterPhoneList(state),
 		loading: state.loading,
 		loadingNewContact: state.loadingNewContact,
 		error: state.error
