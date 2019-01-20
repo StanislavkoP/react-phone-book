@@ -197,6 +197,7 @@ class Dashboard extends Component {
 		const contactData = getDataFromInputs(this.state.inputs);
 		
 		this.props.onUpdateContact(contactData, contactId)
+		this.setState({formIsValid: false})
 	}
 
 
@@ -289,7 +290,6 @@ const mapDispatchToProps = dispatch => {
 		onUpdateContact: (contactData, contactId) => dispatch( actions.onUpdateContact(contactData, contactId) ),
 		onDeleteContact: (contactId) => dispatch( actions.onDeleteContact(contactId) ),
 		searchPhone: (value, phoneListInit) => dispatch( actions.searchPhone(value, phoneListInit) ),
-		viewAllPhones: () => dispatch( actions.viewAllPhones() )
 	}
 }
 

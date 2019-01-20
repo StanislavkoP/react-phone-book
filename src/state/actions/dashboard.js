@@ -50,12 +50,6 @@ export const searchPhone = (valueInput) => ({
 	searchedText: valueInput,
 });
 
-export const viewAllPhones = () => {
-	return {
-		type: actionTypes.VIEW_ALL_PHONES
-	}
-}
-
 const onAddContactStart = () => {
 	return {
 		type: actionTypes.ADD_CONTACT_START
@@ -118,7 +112,7 @@ const onDeleteContactFailed = error => ({
 });
 
 export const onDeleteContact = contactId => (dispatch, getState) => {
-	dispatch( onDeleteContactInit() )
+	/* dispatch( onDeleteContactInit() ) */
 
 	axios
 		.delete(`https://phone-book-cc717.firebaseio.com/peoples/${contactId}.json`)

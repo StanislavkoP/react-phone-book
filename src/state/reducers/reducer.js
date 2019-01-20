@@ -102,13 +102,6 @@ const searchPhone = (state, action) => {
 	}
 }
 
-const viewAllPhones = (state,action) => {
-	return {
-		...state,
-		filteredPhones : [...state.phonesInit]
-	}
-}
-
 const reducer = (state = initialState, action) => {
 	switch (action.type) {
 		case actionTypes.LOAD_PHONE_LIST_START : return loadPhoneListStart(state, action);
@@ -126,7 +119,6 @@ const reducer = (state = initialState, action) => {
 		case actionTypes.DELETE_CONTACT_FAILED : return onDeleteContactFailed(state, action);
 		
 		case actionTypes.SEARCH_PHONE : return searchPhone(state, action);
-		case actionTypes.VIEW_ALL_PHONES : return viewAllPhones(state, action);
 		default: return state;
 	}
 }
