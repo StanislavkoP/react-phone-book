@@ -18,7 +18,6 @@ const filterPhoneList = (list, searchedText) => {
 	}
 	
 	if ( isEmpty(searchedText) || isEmpty(CONDITIONS) ) {
-		console.log(list)
 		return list;
 	}
 
@@ -28,13 +27,12 @@ const filterPhoneList = (list, searchedText) => {
 		for( let key in CONDITIONS) {
 			
 			// Checking if the first key in CONDITIONS object has filter keys
-			if( !isEmpty(CONDITIONS[key]) ) {
+			if( !isEmpty(CONDITIONS[key]) && ( typeof CONDITIONS[key] === 'object')  ) {
 				// Iteration over the second key in CONDITIONS
 				for( let key2 in CONDITIONS[key]) {
 
 					// Iteration over the list you need to filter
 					list.forEach(contact => {
-						console.log(contact[key])
 						// Variable with true or false if contact has field coincidence with text which user typed
 						const valueHasCoincidence = contact[key][key2].toLowerCase().includes(searchedText);
 						
@@ -51,6 +49,7 @@ const filterPhoneList = (list, searchedText) => {
 						};
 					});
 				};
+			
 			} else {
 				list.forEach(contact => {
 					// Variable with true or false if contact has field coincidence with text which user typed
