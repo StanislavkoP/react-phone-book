@@ -110,7 +110,7 @@ function AddContactForm (props) {
 							Update
 						</button>
 						<button 
-							className={`ui negative button ${ loading ? 'loading' : ''}` }
+							className='ui negative button'
 							type="button"
 							onClick={ cancelEditing }
 						>
