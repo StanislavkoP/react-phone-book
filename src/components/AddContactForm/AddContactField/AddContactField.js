@@ -8,7 +8,7 @@ const AddContactField = props => {
 
 	return(
 		<div className={`field ${ errorClass }`}>
-			<label>{ props.label }</label>
+			<label>{ props.label } {props.isRequired ? <i className="asterisk red icon"></i> : null}</label>
 			<input type="text"  
 				placeholder={ props.placeholder } 
 				value={ props.inputValue }

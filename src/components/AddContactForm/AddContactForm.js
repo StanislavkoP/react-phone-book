@@ -5,8 +5,10 @@ import AddContactField from './AddContactField/AddContactField';
 const AddContactForm = props =>  (
 	<form className="ui form" ref={props.refForm}>
 		<h2 className="ui dividing header">Adding contact</h2>
+			<p>Field with <i className="asterisk red icon"></i> is required</p>
 			<div className="two fields">
 				<AddContactField
+					isRequired={ props.dataOfName.validation.isRequired }
 					errorMessage={ props.dataOfName.valid.errorMessage }
 					label="First Name" 
 					placeholder="First Name"
@@ -16,7 +18,8 @@ const AddContactForm = props =>  (
 					change={ (e) => props.change(e, props.dataOfName.inputIdentifier) }
 				/>
 				
-				<AddContactField 
+				<AddContactField
+					isRequired={ props.dataOfLastName.validation.isRequired }
 					errorMessage={ props.dataOfLastName.valid.errorMessage }
 					label="Last Name" 
 					placeholder="Last Name"
@@ -28,7 +31,8 @@ const AddContactForm = props =>  (
 			</div>
 
 			<div className="two fields">
-				<AddContactField 
+				<AddContactField
+					isRequired={ props.dataOfCompany.validation.isRequired }
 					errorMessage={ props.dataOfCompany.valid.errorMessage }
 					label="Company" 
 					placeholder="Company"
@@ -38,7 +42,8 @@ const AddContactForm = props =>  (
 					change={ (e) => props.change(e, props.dataOfCompany.inputIdentifier) }
 				/>
 
-				<AddContactField 
+				<AddContactField
+					isRequired={ props.dataOfPhoto.validation.isRequired }
 					errorMessage={ props.dataOfPhoto.valid.errorMessage }
 					label="Link to a photo" 
 					placeholder="Link to a photo"
@@ -51,6 +56,7 @@ const AddContactForm = props =>  (
 
 			<div className="two fields">
 				<AddContactField
+					isRequired={ props.dataOfPhoneNumber.validation.isRequired }
 					errorMessage={ props.dataOfPhoneNumber.valid.errorMessage }
 					label="Phone number" 
 					placeholder="Phone number"
@@ -61,6 +67,7 @@ const AddContactForm = props =>  (
 				/>
 	
 				<AddContactField
+					isRequired={ props.dataOfEmail.validation.isRequired }
 					errorMessage={ props.dataOfEmail.valid.errorMessage }
 					label="Email" 
 					placeholder="Email"
