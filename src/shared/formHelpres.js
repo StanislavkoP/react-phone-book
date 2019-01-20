@@ -17,16 +17,16 @@ export const clearForm = (inputs) => {
 
 
 export const checkFormValidation = (inputs) => {
-	let formIsValid = true;
+	let allIsValid = [];
+	
 	for (let inputIdentifier in inputs) {
-		
+		let formIsValid = true;
 		const currentInput = inputs[inputIdentifier];
 		const inputIsRequired = currentInput.validation.isRequired;
 		const inputValueLength = currentInput.value.trim().length;
 		
 		if (inputIsRequired) {
-			formIsValid = currentInput.valid.isValid && formIsValid;
-			console.log(currentInput)
+			formIsValid = currentInput.valid.isValid;
 		}
 
 		if (!inputIsRequired) {
@@ -34,12 +34,13 @@ export const checkFormValidation = (inputs) => {
 		}
 
 		if (inputValueLength > 0 && !inputIsRequired) {
-			formIsValid = currentInput.valid.isValid && formIsValid;
+			formIsValid = currentInput.valid.isValid;
 		}
 
+		allIsValid.push(formIsValid);
 	};
-
-	return formIsValid;
+	
+	return !allIsValid.some(item => item === false);
 };
 
 export const getDataFromInputs = (inputs) => {
