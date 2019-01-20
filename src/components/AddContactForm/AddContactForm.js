@@ -2,116 +2,135 @@ import React from 'react';
 
 import AddContactField from './AddContactField/AddContactField';
 
-const AddContactForm = props =>  (
-	<form className="ui form" ref={props.refForm}>
-		<h2 className="ui dividing header">Adding contact</h2>
-			<p>Field with <i className="asterisk red icon"></i> is required</p>
-			<div className="two fields">
-				<AddContactField
-					isRequired={ props.dataOfName.validation.isRequired }
-					errorMessage={ props.dataOfName.valid.errorMessage }
-					label="First Name" 
-					placeholder="First Name"
-					isValid={ props.dataOfName.valid.isValid }
-					touched={ props.dataOfName.touched }
-					inputValue={ props.dataOfName.value }
-					change={ (e) => props.change(e, props.dataOfName.inputIdentifier) }
-				/>
-				
-				<AddContactField
-					isRequired={ props.dataOfLastName.validation.isRequired }
-					errorMessage={ props.dataOfLastName.valid.errorMessage }
-					label="Last Name" 
-					placeholder="Last Name"
-					isValid={ props.dataOfLastName.valid.isValid }
-					touched={ props.dataOfLastName.touched }
-					inputValue={ props.dataOfLastName.value }
-					change={ (e) => props.change(e, props.dataOfLastName.inputIdentifier) }
-				/>
-			</div>
-
-			<div className="two fields">
-				<AddContactField
-					isRequired={ props.dataOfCompany.validation.isRequired }
-					errorMessage={ props.dataOfCompany.valid.errorMessage }
-					label="Company" 
-					placeholder="Company"
-					isValid={ props.dataOfCompany.valid.isValid }
-					touched={ props.dataOfCompany.touched }
-					inputValue={ props.dataOfCompany.value }
-					change={ (e) => props.change(e, props.dataOfCompany.inputIdentifier) }
-				/>
-
-				<AddContactField
-					isRequired={ props.dataOfPhoto.validation.isRequired }
-					errorMessage={ props.dataOfPhoto.valid.errorMessage }
-					label="Link to a photo" 
-					placeholder="Link to a photo"
-					isValid={ props.dataOfPhoto.valid.isValid }
-					touched={ props.dataOfPhoto.touched }
-					inputValue={ props.dataOfPhoto.value }
-					change={ (e) => props.change(e, props.dataOfPhoto.inputIdentifier) }
-				/>
-			</div>
-
-			<div className="two fields">
-				<AddContactField
-					isRequired={ props.dataOfPhoneNumber.validation.isRequired }
-					errorMessage={ props.dataOfPhoneNumber.valid.errorMessage }
-					label="Phone number" 
-					placeholder="Phone number"
-					isValid={ props.dataOfPhoneNumber.valid.isValid }
-					touched={ props.dataOfPhoneNumber.touched }
-					inputValue={ props.dataOfPhoneNumber.value }
-					change={ (e) => props.change(e, props.dataOfPhoneNumber.inputIdentifier) }
-				/>
+function AddContactForm (props) {
+	const { 
+		dataOfName,
+		dataOfLastName,
+		dataOfCompany,
+		dataOfPhoto,
+		dataOfPhoneNumber,
+		dataOfEmail,
+		change,
+		refForm,
+		formIsEditing,
+		disablingForm,
+		loading,
+		addContact,
+		cancelEditing,
+		updateContact
 	
-				<AddContactField
-					isRequired={ props.dataOfEmail.validation.isRequired }
-					errorMessage={ props.dataOfEmail.valid.errorMessage }
-					label="Email" 
-					placeholder="Email"
-					isValid={ props.dataOfEmail.valid.isValid }
-					touched={ props.dataOfEmail.touched }
-					inputValue={ props.dataOfEmail.value }
-					change={ (e) => props.change(e, props.dataOfEmail.inputIdentifier) }
-				/>
-			</div>
+	} = props;
 
-		{
-			props.formIsEditing
-			? (
-				<div>
-					<button 
-						className={`ui positive button ${props.loading ? 'loading' : ''}`}
-						disabled={props.disablingForm}
-						type="submit"
-						onClick={ props.updateContact }
-					>
-						Update
-					</button>
-					<button 
-						className={`ui negative button ${props.loading ? 'loading' : ''}`}
-						type="button"
-						onClick={ props.cancelEditing }
-					>
-						Cancel
-					</button>
+	return (
+		<form className="ui form" ref={ refForm }>
+			<h2 className="ui dividing header">Adding contact</h2>
+				<p>Field with <i className="asterisk red icon"></i> is required</p>
+				<div className="two fields">
+					<AddContactField
+						isRequired={ dataOfName.validation.isRequired }
+						errorMessage={ dataOfName.valid.errorMessage }
+						label="First Name" 
+						placeholder="First Name"
+						isValid={ dataOfName.valid.isValid }
+						touched={ dataOfName.touched }
+						inputValue={ dataOfName.value }
+						change={ (e) => change(e, dataOfName.inputIdentifier) }
+					/>
+					
+					<AddContactField
+						isRequired={ dataOfLastName.validation.isRequired }
+						errorMessage={ dataOfLastName.valid.errorMessage }
+						label="Last Name" 
+						placeholder="Last Name"
+						isValid={ dataOfLastName.valid.isValid }
+						touched={ dataOfLastName.touched }
+						inputValue={ dataOfLastName.value }
+						change={ (e) => change(e, dataOfLastName.inputIdentifier) }
+					/>
 				</div>
-			)
-			: (
-				<button 
-				className={`ui primary button ${props.loading ? 'loading' : ''}`}
-				disabled={props.disablingForm}
-				type="submit"
-				onClick={ props.addContact }
-			>
-				Submit
-			</button>
-			)
-		}
-
-	</form>
+	
+				<div className="two fields">
+					<AddContactField
+						isRequired={ dataOfCompany.validation.isRequired }
+						errorMessage={ dataOfCompany.valid.errorMessage }
+						label="Company" 
+						placeholder="Company"
+						isValid={ dataOfCompany.valid.isValid }
+						touched={ dataOfCompany.touched }
+						inputValue={ dataOfCompany.value }
+						change={ (e) => change(e, dataOfCompany.inputIdentifier) }
+					/>
+	
+					<AddContactField
+						isRequired={ dataOfPhoto.validation.isRequired }
+						errorMessage={ dataOfPhoto.valid.errorMessage }
+						label="Link to a photo" 
+						placeholder="Link to a photo"
+						isValid={ dataOfPhoto.valid.isValid }
+						touched={ dataOfPhoto.touched }
+						inputValue={ dataOfPhoto.value }
+						change={ (e) => change(e, dataOfPhoto.inputIdentifier) }
+					/>
+				</div>
+	
+				<div className="two fields">
+					<AddContactField
+						isRequired={ dataOfPhoneNumber.validation.isRequired }
+						errorMessage={ dataOfPhoneNumber.valid.errorMessage }
+						label="Phone number" 
+						placeholder="Phone number"
+						isValid={ dataOfPhoneNumber.valid.isValid }
+						touched={ dataOfPhoneNumber.touched }
+						inputValue={ dataOfPhoneNumber.value }
+						change={ (e) => change(e, dataOfPhoneNumber.inputIdentifier) }
+					/>
+		
+					<AddContactField
+						isRequired={ dataOfEmail.validation.isRequired }
+						errorMessage={ dataOfEmail.valid.errorMessage }
+						label="Email" 
+						placeholder="Email"
+						isValid={ dataOfEmail.valid.isValid }
+						touched={ dataOfEmail.touched }
+						inputValue={ dataOfEmail.value }
+						change={ (e) => change(e, dataOfEmail.inputIdentifier) }
+					/>
+				</div>
+	
+			{
+				formIsEditing
+				? (
+					<div>
+						<button 
+							className={`ui positive button ${ loading ? 'loading' : ''}` }
+							disabled={ disablingForm }
+							type="submit"
+							onClick={ updateContact }
+						>
+							Update
+						</button>
+						<button 
+							className={`ui negative button ${ loading ? 'loading' : ''}` }
+							type="button"
+							onClick={ cancelEditing }
+						>
+							Cancel
+						</button>
+					</div>
+				)
+				: (
+					<button 
+						className={`ui primary button ${ loading ? 'loading' : ''}` }
+						disabled={ disablingForm }
+						type="submit"
+						onClick={ addContact }
+					>
+						Submit
+					</button>
+				)
+			}
+		</form>
 	);
+};
 
 export default AddContactForm;
