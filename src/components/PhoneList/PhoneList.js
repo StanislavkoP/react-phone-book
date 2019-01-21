@@ -1,7 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import PhoneItem from './PhoneItem/PhoneItem';
 
-const PhoneList = props => {
+PhoneList.propTypes = {
+	phoneList : PropTypes.array.isRequired,
+	deleteContact: PropTypes.func.isRequired,
+	editContact: PropTypes.func.isRequired,
+};
+
+function PhoneList (props) {
 	const { phoneList, deleteContact, editContact } = props;
 	
 	return ( 
@@ -25,6 +33,8 @@ const PhoneList = props => {
 		</div>
 	);
 
-}
+};
+
+
 
 export default PhoneList;
