@@ -3,9 +3,9 @@ import * as actionTypes from './actionTypes';
 
 import { updateObject } from '../../shared/index';
 
-const loadPhoneListStart = () => {
+const loadPhoneListInit = () => {
 	return {
-		type: actionTypes.LOAD_PHONE_LIST_START
+		type: actionTypes.LOAD_PHONE_LIST_INIT
 	}
 }
 
@@ -25,11 +25,11 @@ const loadPhoneListFailed = (error) => {
 
 export const loadPhoneList = () => {
 	return dispatch => {
-		dispatch( loadPhoneListStart() );
+		dispatch( loadPhoneListInit() );
 
 		axios.get('https://phone-book-cc717.firebaseio.com/peoples.json')
 			.then(response => {
-				const contactsData = response.data
+				const contactsData = response.data;
 				const idsEachContact = Object.keys(contactsData);
 				const phoneList = idsEachContact.map(item => ({...contactsData[item], id: item}) );
 				
@@ -50,9 +50,9 @@ export const searchPhone = (valueInput) => ({
 	searchedText: valueInput,
 });
 
-const onAddContactStart = () => {
+const onAddContactInit = () => {
 	return {
-		type: actionTypes.ADD_CONTACT_START
+		type: actionTypes.ADD_CONTACT_INIT
 	}
 }
 
@@ -72,7 +72,7 @@ const onAddContactFailed = (error) => {
 
 export const onAddContact = (contactData) => dispatch => {
 
-	dispatch( onAddContactStart() );
+	dispatch( onAddContactInit() );
 
 	axios.post('https://phone-book-cc717.firebaseio.com/peoples.json', contactData)
 		.then(response => {
@@ -93,18 +93,20 @@ export const onAddContact = (contactData) => dispatch => {
 		})
 };
 
-const onDeleteContactInit = () => ({
-	type: actionTypes.LOAD_PHONE_LIST_START
+export const onEditContact = (contactId) => ({
+	type: actionTypes.EDIT_CONTACT,
+	contactId,
 });
 
-const onDeleteContactSuccess = (deletedContactId, oldPhoneList) => {
-	const newPhoneList = oldPhoneList.filter(contact => contact.id !== deletedContactId);
+const onDeleteContactInit = () => ({
+	type: actionTypes.DELETE_CONTACT_INIT
+});
 
-	return {
-		type: actionTypes.DELETE_CONTACT_SUCCESS,
-		newPhoneList,
-	}
-}
+const onDeleteContactSuccess = (newPhoneList) => ({
+	type: actionTypes.DELETE_CONTACT_SUCCESS,
+	newPhoneList,
+
+});
 
 const onDeleteContactFailed = error => ({
 	type: actionTypes.DELETE_CONTACT_FAILED,
@@ -112,19 +114,22 @@ const onDeleteContactFailed = error => ({
 });
 
 export const onDeleteContact = contactId => (dispatch, getState) => {
-	/* dispatch( onDeleteContactInit() ) */
+	dispatch( onDeleteContactInit() )
 
 	axios
 		.delete(`https://phone-book-cc717.firebaseio.com/peoples/${contactId}.json`)
 		.then(response => {
-			const oldPhoneList = getState().phonesInit;
+			const oldPhoneList = getState().phoneList;
+			const deletedContactId = contactId;
+			const newPhoneList = oldPhoneList.filter(contact => contact.id !== deletedContactId);
 
-			dispatch( onDeleteContactSuccess(contactId, oldPhoneList) )
+			dispatch( onDeleteContactSuccess(newPhoneList) )
 
 		})
 		.catch(error => {
 			const errorResponsed = error.response;
 			console.log(errorResponsed);
+			
 			dispatch( onDeleteContactFailed(errorResponsed) )
 		})
 
@@ -141,11 +146,11 @@ const onUpdateContactFailed = (error) => ({
 });
 
 export const onUpdateContact = (contactData, contactId) => (dispatch, getState) => {
-	
+	dispatch( onAddContactInit() )
 	axios
 		.put(`https://phone-book-cc717.firebaseio.com/peoples/${contactId}.json`, contactData)
 		.then(response => {
-			const oldPhoneList = getState().phonesInit;
+			const oldPhoneList = getState().phoneList;
 			const indexContactInArray = oldPhoneList.findIndex(contact => contact.id === contactId);
 			
 			const updatedContact = updateObject(oldPhoneList[indexContactInArray], contactData);			
