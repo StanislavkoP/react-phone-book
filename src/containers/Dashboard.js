@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
 import PropTypes from 'prop-types';
-import { debounce, updateObject, checkValidity } from '../shared/index';
 
 import * as actions from '../state/actions/actions';
-import { clearForm, checkFormValidation, getDataFromInputs } from '../shared/formHelpres.js';
+import { debounce, updateObject} from '../shared/index';
+import { clearForm, checkValidity, checkFormValidation, getDataFromInputs } from '../shared/formHelpres.js';
 import filterPhoneList from '../selects/filterPhoneList';
 
 import PhoneList from '../components/PhoneList/PhoneList';
@@ -21,7 +21,7 @@ class Dashboard extends Component {
 				value: '',
 				validation: {
 					isName: true,
-					maxLength: 10,
+					maxLength: 20,
 					isRequired: true,
 				},
 				valid: {
@@ -35,6 +35,7 @@ class Dashboard extends Component {
 				value: '',
 				validation: {
 					isLastName: true,
+					maxLength: 20,
 					isRequired: true,
 				},
 				valid: {
@@ -48,6 +49,7 @@ class Dashboard extends Component {
 				value: '',
 				validation: {
 					isPhotoLink: true,
+					maxLength: 300,
 				},
 				valid: {
 					isValid: false,
@@ -60,6 +62,7 @@ class Dashboard extends Component {
 				value: '',
 				validation: {
 					isCompany: true,
+					maxLength: 20,
 					isRequired: true,
 				},
 				valid: {
@@ -73,6 +76,7 @@ class Dashboard extends Component {
 				value: '',
 				validation: {
 					isEmail: true,
+					maxLength: 30,
 					isRequired: true,
 				},
 				valid: {
@@ -95,7 +99,6 @@ class Dashboard extends Component {
 				touched: false
 			},
 		},
-		updatingContactId: null,
 		formIsEditing: false,
 		formIsValid: false,
 	};
@@ -121,6 +124,31 @@ class Dashboard extends Component {
 		
 		}
 
+		if (inputIdentifier === 'phoneNumber') {
+			let clearedInput = inputValue.replace(/\D/g, '');
+			let arrayWithCoincidence = clearedInput.match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+
+			if (!arrayWithCoincidence[0]) {
+				inputValue = '';
+			
+			} else {
+				if (!arrayWithCoincidence[2]) {
+					inputValue = '(' + arrayWithCoincidence[1];
+				
+				} else {
+					inputValue = '(' + arrayWithCoincidence[1] + ') ' + arrayWithCoincidence[2];
+				}
+
+				if (arrayWithCoincidence[3]) {
+					inputValue += '-' + arrayWithCoincidence[3];
+				
+				} else {
+					inputValue += '';
+				}
+			}
+		
+		};
+
 		const updatedFormElement = updateObject(this.state.inputs[inputIdentifier], {
 			value: inputValue,
 			valid: checkValidity(inputValue, this.state.inputs[inputIdentifier].validation),
@@ -141,13 +169,13 @@ class Dashboard extends Component {
 		const contactData = getDataFromInputs(this.state.inputs);
 
 		const clearedFormInputs = clearForm(this.state.inputs);
-		this.setState({inputs: clearedFormInputs})
+		this.setState({inputs: clearedFormInputs, formIsValid: false})
 
 		this.props.onAddContact(contactData)
 	}
 
 	onEditContact(contactId) {
-		const editedContact = this.props.phonesListInit.find(contact => contact.id === contactId);
+		const editedContact = this.props.phoneList.find(contact => contact.id === contactId);
 		
 		const formElemetsWithData = {};
 		formElemetsWithData.firstName = editedContact.firstName;
@@ -172,9 +200,10 @@ class Dashboard extends Component {
 
 		this.setState({
 			inputs: updatedFormElements,
-			updatingContactId: contactId,
 			formIsEditing: true, 
 		});
+
+		this.props.onEditContact(contactId);
 
 		this.refForm.scrollIntoView();
 	};
@@ -193,23 +222,67 @@ class Dashboard extends Component {
 	onUpdateContact = (event) => {
 		event.preventDefault();
 		
-		const contactId = this.state.updatingContactId; 
+		const contactId = this.props.editedContactId; 
 		const contactData = getDataFromInputs(this.state.inputs);
 		
 		this.props.onUpdateContact(contactData, contactId)
 		this.setState({formIsValid: false})
 	}
 
+	onDeleteContact = (contactId) => {
+		const formIsEditing = this.state.formIsEditing;
+		const editedContactId = this.props.editedContactId;
+		
+		if (formIsEditing && editedContactId) {
+			if (editedContactId === contactId) {
+				const clearedFormInputs = clearForm(this.state.inputs);
+
+				this.setState({
+					inputs: clearedFormInputs,
+					formIsValid: false,
+					formIsEditing: false,
+				});
+			}
+		}
+		
+		this.props.onDeleteContact(contactId)
+	}
+
 
 	render () {
-		const { phonesListInit, onDeleteContact, loadingNewContact, error } = this.props;
+		const { phoneList, loadingForm, error, loadingPhoneList } = this.props;
 		const { inputs, formIsEditing, formIsValid } = this.state;
 
-		let phoneList = <Spinner />
-		if (this.props.loading === false) {
-			phoneList = (
+		let phoneListContent = <Spinner />
+		if (this.props.loadingPhoneList === false) {
+			phoneListContent = (
 				<React.Fragment>
-					<AddContactForm
+					<div className="ui input fluid focus">
+						<Input 
+							classes="searchPhone big" 
+							placeholder='Search' 
+							change={ (e) => this.searchPost(e.currentTarget.value) } 
+						/>
+					</div>
+
+					<PhoneList 
+						phoneList={ phoneList }
+						deleteContact={ (contactId) => this.onDeleteContact(contactId) }
+						loading={ loadingPhoneList }
+						editContact={ (contactId) => this.onEditContact(contactId) }
+					/>
+				</React.Fragment>
+			)
+		}
+
+		let errorContent = null;
+		if (error) {
+			errorContent = <h4 className="ui red header">{ error }</h4>
+		}
+
+		return (
+			<React.Fragment>
+				<AddContactForm
 						refForm={(refForm) => (this.refForm = refForm)}
 						
 						change={ (e, inputIdentifier) => this.changeInputHandler(e, inputIdentifier) }
@@ -226,34 +299,14 @@ class Dashboard extends Component {
 						
 						disablingForm={ !formIsValid }
 						formIsEditing={ formIsEditing }
-						loading={ loadingNewContact }
-					/>
+						loading={ loadingForm }
+				/>
 
-					<div className="ui input fluid focus">
-						<Input 
-							classes="searchPhone big" 
-							placeholder='Search' 
-							change={ (e) => this.searchPost(e.currentTarget.value) } 
-						/>
-					</div>
-
-					<PhoneList 
-						phoneList={ phonesListInit }
-						deleteContact={ (contactId) => onDeleteContact(contactId) }
-						editContact={ (contactId) => this.onEditContact(contactId) }
-					/>
-				</React.Fragment>
-			)
-		}
-
-		let errorContent = null;
-		if (error) {
-			errorContent = <h4 className="ui red header">{ error }</h4>
-		}
-
-		return (
-			<React.Fragment>
-				{ phoneList }
+				<div  style={{position: 'relative'}}>
+					{
+						phoneListContent
+					}
+				</div>
 				{ errorContent }
 			</React.Fragment>
 			
@@ -262,7 +315,7 @@ class Dashboard extends Component {
 }
 
 Dashboard.defaultProps = {
-	phonesListInit: [],
+	phoneList: [],
 }
 
 Dashboard.propTypes = {
@@ -276,9 +329,10 @@ Dashboard.propTypes = {
 
 const mapStateToProps = state => {
 	return {
-		phonesListInit: filterPhoneList(state),
-		loading: state.loading,
-		loadingNewContact: state.loadingNewContact,
+		phoneList: filterPhoneList(state),
+		editedContactId: state.editedContactId,
+		loadingPhoneList: state.loadingPhoneList,
+		loadingForm: state.loadingForm,
 		error: state.error
 	}
 }
@@ -287,6 +341,7 @@ const mapDispatchToProps = dispatch => {
 	return {
 		loadPhoneList: () => dispatch( actions.loadPhoneList() ),
 		onAddContact: (contactData) => dispatch( actions.onAddContact(contactData) ),
+		onEditContact: (contactId) => dispatch( actions.onEditContact(contactId) ),
 		onUpdateContact: (contactData, contactId) => dispatch( actions.onUpdateContact(contactData, contactId) ),
 		onDeleteContact: (contactId) => dispatch( actions.onDeleteContact(contactId) ),
 		searchPhone: (value, phoneListInit) => dispatch( actions.searchPhone(value, phoneListInit) ),
