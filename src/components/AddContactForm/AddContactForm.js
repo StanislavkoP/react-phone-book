@@ -1,6 +1,16 @@
 import React from 'react';
 
+import PropTypes from 'prop-types';
+
 import AddContactField from './AddContactField/AddContactField';
+
+AddContactForm.propTypes = {
+	refForm: PropTypes.func.isRequired,
+	change: PropTypes.func.isRequired,
+	addContact: PropTypes.func.isRequired,
+	cancelEditing: PropTypes.func.isRequired,
+	updateContact: PropTypes.func.isRequired,
+};
 
 function AddContactForm (props) {
 	const { 
@@ -10,11 +20,12 @@ function AddContactForm (props) {
 		dataOfPhoto,
 		dataOfPhoneNumber,
 		dataOfEmail,
-		change,
 		refForm,
 		formIsEditing,
 		disablingForm,
 		loading,
+		
+		change,
 		addContact,
 		cancelEditing,
 		updateContact
@@ -27,72 +38,72 @@ function AddContactForm (props) {
 				<p>Field with <i className="asterisk red icon"></i> is required</p>
 				<div className="two fields">
 					<AddContactField
-						isRequired={ dataOfName.validation.isRequired }
-						errorMessage={ dataOfName.valid.errorMessage }
+						inputValue={ dataOfName.value }
 						label="First Name" 
 						placeholder="First Name"
+						isRequired={ dataOfName.validation.isRequired }
 						isValid={ dataOfName.valid.isValid }
 						touched={ dataOfName.touched }
-						inputValue={ dataOfName.value }
+						errorMessage={ dataOfName.valid.errorMessage }
 						change={ (e) => change(e, dataOfName.inputIdentifier) }
 					/>
 					
 					<AddContactField
-						isRequired={ dataOfLastName.validation.isRequired }
-						errorMessage={ dataOfLastName.valid.errorMessage }
+						inputValue={ dataOfLastName.value }
 						label="Last Name" 
 						placeholder="Last Name"
+						isRequired={ dataOfLastName.validation.isRequired }
 						isValid={ dataOfLastName.valid.isValid }
 						touched={ dataOfLastName.touched }
-						inputValue={ dataOfLastName.value }
+						errorMessage={ dataOfLastName.valid.errorMessage }
 						change={ (e) => change(e, dataOfLastName.inputIdentifier) }
 					/>
 				</div>
 	
 				<div className="two fields">
 					<AddContactField
-						isRequired={ dataOfCompany.validation.isRequired }
-						errorMessage={ dataOfCompany.valid.errorMessage }
+						inputValue={ dataOfCompany.value }
 						label="Company" 
 						placeholder="Company"
+						isRequired={ dataOfCompany.validation.isRequired }
 						isValid={ dataOfCompany.valid.isValid }
 						touched={ dataOfCompany.touched }
-						inputValue={ dataOfCompany.value }
+						errorMessage={ dataOfCompany.valid.errorMessage }
 						change={ (e) => change(e, dataOfCompany.inputIdentifier) }
 					/>
 	
 					<AddContactField
-						isRequired={ dataOfPhoto.validation.isRequired }
-						errorMessage={ dataOfPhoto.valid.errorMessage }
+						inputValue={ dataOfPhoto.value }
 						label="Link to a photo" 
 						placeholder="Link to a photo"
+						isRequired={ dataOfPhoto.validation.isRequired }
 						isValid={ dataOfPhoto.valid.isValid }
 						touched={ dataOfPhoto.touched }
-						inputValue={ dataOfPhoto.value }
+						errorMessage={ dataOfPhoto.valid.errorMessage }
 						change={ (e) => change(e, dataOfPhoto.inputIdentifier) }
 					/>
 				</div>
 	
 				<div className="two fields">
 					<AddContactField
-						isRequired={ dataOfPhoneNumber.validation.isRequired }
-						errorMessage={ dataOfPhoneNumber.valid.errorMessage }
-						label="Phone number" 
+						inputValue={ dataOfPhoneNumber.value }
 						placeholder="Phone number"
+						label="Phone number" 
+						isRequired={ dataOfPhoneNumber.validation.isRequired }
 						isValid={ dataOfPhoneNumber.valid.isValid }
 						touched={ dataOfPhoneNumber.touched }
-						inputValue={ dataOfPhoneNumber.value }
+						errorMessage={ dataOfPhoneNumber.valid.errorMessage }
 						change={ (e) => change(e, dataOfPhoneNumber.inputIdentifier) }
 					/>
 		
 					<AddContactField
-						isRequired={ dataOfEmail.validation.isRequired }
-						errorMessage={ dataOfEmail.valid.errorMessage }
+						inputValue={ dataOfEmail.value }
 						label="Email" 
 						placeholder="Email"
+						isRequired={ dataOfEmail.validation.isRequired }
 						isValid={ dataOfEmail.valid.isValid }
 						touched={ dataOfEmail.touched }
-						inputValue={ dataOfEmail.value }
+						errorMessage={ dataOfEmail.valid.errorMessage }
 						change={ (e) => change(e, dataOfEmail.inputIdentifier) }
 					/>
 				</div>
@@ -103,15 +114,16 @@ function AddContactForm (props) {
 					<div>
 						<button 
 							className={`ui positive button ${ loading ? 'loading' : ''}` }
-							disabled={ disablingForm }
 							type="submit"
+							disabled={ disablingForm }
 							onClick={ updateContact }
 						>
 							Update
 						</button>
+
 						<button 
-							className='ui negative button'
 							type="button"
+							className='ui negative button'
 							onClick={ cancelEditing }
 						>
 							Cancel
@@ -121,8 +133,8 @@ function AddContactForm (props) {
 				: (
 					<button 
 						className={`ui primary button ${ loading ? 'loading' : ''}` }
-						disabled={ disablingForm }
 						type="submit"
+						disabled={ disablingForm }
 						onClick={ addContact }
 					>
 						Submit
